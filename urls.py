@@ -10,7 +10,10 @@ urlpatterns = patterns('',
     url(r'^polls/(?P<poll_id>\d+)/$', 'polls.views.detail'),
     url(r'^polls/(?P<poll_id>\d+)/results/$', 'polls.views.results'),
     url(r'^polls/(?P<poll_id>\d+)/vote/$', 'polls.views.vote'),
-
+    #url(r'^checklist/$', 'django.contrib.auth.views.login', {'template_name': 'checklist/index.html'}),
+    url(r'^checklist/$', 'checklist.views.index'),
+    url(r'^checklist/home_view', 'checklist.views.home_view'),
+        
     # url(r'^$', 'seng422gp2.views.home', name='home'),
     # url(r'^seng422gp2/', include('seng422gp2.foo.urls')),
 
