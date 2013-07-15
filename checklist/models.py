@@ -11,7 +11,7 @@ class Checklist(models.Model):
 	title = models.CharField(max_length=100)
 	description = models.CharField(max_length=500)
 	create_date = models.DateTimeField('date created')
-	landDist = models.CharField(max_length=100)
+	landDistrict = models.CharField(max_length=100)
 	address = models.CharField(max_length=100)
 	#assigner = 
 	#assignee = models.ForeignKey(auth_user, blank=True, null=True)
@@ -24,14 +24,46 @@ class Checklist(models.Model):
 
 class PlanTitle(models.Model):
 	checklist = models.ForeignKey(Checklist)
-	CHOICES = (('1', 'First',), ('2', 'Second',))
-	#choice_field = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
-	field = models.BooleanField('This is the first checklist item, so bad eh',default=False)
+	item = models.CharField(max_length=100)
+	def __unicode__(self):
+		return self.item
 
-	section_1 = models.BooleanField(default=True)
-	#def __unicode__(self):
-	#	return self.section1
+class MainBody(models.Model):
+	checklist = models.ForeignKey(Checklist)
+	item = models.CharField(max_length=100)
+	def __unicode__(self):
+		return self.item
 
+class Scenery(models.Model):
+	checklist = models.ForeignKey(Checklist)
+	item = models.CharField(max_length=100)
+	def __unicode__(self):
+		return self.item
+
+class DepositStatement(models.Model):
+	checklist = models.ForeignKey(Checklist)
+	item = models.CharField(max_length=100)
+	def __unicode__(self):
+		return self.item
+
+class IntegratedSurveyArea(models.Model):
+	checklist = models.ForeignKey(Checklist)
+	item = models.CharField(max_length=100)
+	def __unicode__(self):
+		return self.item
+
+class Miscellanous(models.Model):
+	checklist = models.ForeignKey(Checklist)
+	item = models.CharField(max_length=100)
+	def __unicode__(self):
+		return self.item
+		
+class ElectronicPlan(models.Model):
+	checklist = models.ForeignKey(Checklist)
+	item = models.CharField(max_length=100)
+	def __unicode__(self):
+		return self.item
+		
 class Student(models.Model):
     FRESHMAN = 'FR'
     SOPHOMORE = 'SO'
