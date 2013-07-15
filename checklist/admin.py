@@ -47,6 +47,7 @@ class ElectronicPlanInline(admin.TabularInline):
 
 class ChecklistAdmin(admin.ModelAdmin):
     fieldsets = [
+        (None,               {'fields': ['assignee']}),
         (None,               {'fields': ['fileNum']}),
         (None,               {'fields': ['title']}),
         (None,               {'fields': ['description']}),                
@@ -56,9 +57,9 @@ class ChecklistAdmin(admin.ModelAdmin):
         (None,               {'fields': ['address']}),
     ]
     inlines = [PlanTitleInline,MainBodyInline,SceneryInline,DepositStatementInline,IntegratedSurveyAreaInline,MiscellanousInline,ElectronicPlanInline]
-    list_display = ('title', 'create_date', 'was_created_today')
-    list_filter = ['title', 'landDistrict', 'create_date']
-    search_fields = ['title']
+    list_display = ('title', 'assignee', 'create_date', 'was_created_today')
+    list_filter = ['assignee', 'title', 'landDistrict', 'create_date']
+    search_fields = ['title', 'assignnee']
     date_hierarchy = 'create_date'
 
    

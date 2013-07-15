@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User as AutUser
+
+# wiget forms for html submittion (for surveyor live_checklist later and also for 'review_checklist')
 from django import forms
 from django.forms.widgets import RadioSelect, CheckboxSelectMultiple
 
@@ -13,8 +16,7 @@ class Checklist(models.Model):
 	create_date = models.DateTimeField('date created')
 	landDistrict = models.CharField(max_length=100)
 	address = models.CharField(max_length=100)
-	#assigner = 
-	#assignee = models.ForeignKey(auth_user, blank=True, null=True)
+	assignee = models.ForeignKey(AutUser, blank=True, null=True)
 	
 	def __unicode__(self):
 		return self.title
