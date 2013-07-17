@@ -58,5 +58,10 @@ def login_view(request):
 	else:
 		# Return an 'invalid login' error message.
 		return HttpResponse("Invalid login.",c)
-		
-  
+
+# Function to dislay detail view of a checklist_id 
+def checklist_detail(request, checklist_id):
+	#p = get_object_or_404(Poll, pk=poll_id)
+	checklist = Checklist.objects.get(id=checklist_id)
+	return render_to_response('checklist/checklist_detail.html', {'checklist': checklist})
+

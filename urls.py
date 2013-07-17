@@ -16,11 +16,11 @@ urlpatterns = patterns('',
 	#url(r'^checklist/$', 'django.contrib.auth.views.login', {'template_name': 'checklist/index.html'}),
 	url(r'^checklist/$', 'checklist.views.index'),
 	url(r'^checklist/login_view', 'checklist.views.login_view'),
-	#url(r'^checklist/home', 'checklist.views.home'),	
+	url(r'^checklist/(?P<checklist_id>\d+)/$', 'checklist.views.checklist_detail'),	
+
 		
 	# url(r'^$', 'seng422gp2.views.home', name='home'),
 	# url(r'^seng422gp2/', include('seng422gp2.foo.urls')),
-
 	# Uncomment the admin/doc line below to enable admin documentation:
 	# url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

@@ -16,18 +16,30 @@ Also views should use render() instead of render_to_response() for auto adding r
     <p>Sorry, we dont recognize you as being logged in. Something wrong!</p>
 {% endif %}
 
+{% if checklists %}
+    <ul>
+    {% for checklist in checklists %}
+        <li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
+    {% endfor %}
+    </ul>
 
-{% for checklist in checklists %}
-<div>
-    <h1>{{ checklist.title }}</h1>
-	<ul>
-	{% for item in checklist.item_set.all %}
-		<li>{{ item.item }}</li>
+	{% for checklist in checklists %}
+	<div>
+		<h1>{{ checklist.title }}</h1>
+		<ul>
+		{% for item in checklist.item_set.all %}
+			<li>{{ item.item }}</li>
+		{% endfor %}
+		</ul>
+
+	</div>
 	{% endfor %}
-	</ul>
 
-</div>
-{% endfor %}
+{% else %}
+    <p>No checklist is assigned to you.</p>
+{% endif %}
+
+
 
 
 {% endblock %}
