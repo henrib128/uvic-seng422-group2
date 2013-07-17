@@ -29,6 +29,7 @@ class Item(models.Model):
 	TYPE_CHOICES = (
 		('PT', 'Plan Title'),
 		('MB', 'Main Body'),
+		('S', 'Scenery'),
 		('DS', 'Deposit Statement'),
 		('ISA', 'Integrated Survey Area'),
 		('M', 'Miscellanous'),
@@ -36,6 +37,12 @@ class Item(models.Model):
 	)
 	itemType = models.CharField(max_length=5,choices=TYPE_CHOICES,default='PT')
 	item = models.CharField(max_length=100)
+	STATUS_CHOICES = (
+		('U', 'Unanswered'),
+		('Y', 'Yes'),
+		('N', 'N/A'),
+	)	
+	itemStatus = models.CharField(max_length=2,choices=STATUS_CHOICES,default='U')
 
 	def __unicode__(self):
 		return self.item	

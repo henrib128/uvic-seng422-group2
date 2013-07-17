@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+{% load url from future %}
+
+{% block content %}
+
+{% if checklist %}
+	<h1>{{ checklist.title }}</h1>
+	<ul>
+	{% for item in checklist.item_set.all %}
+		<li>{{ item.item }} -- {{ item.itemStatus }}</li>
+	{% empty %}
+    	<li>No item in this list.</li>
+    {% endfor %}
+	</ul>
+
+
+{% else %}
+    <p>Can't find checklist.</p>
+{% endif %}
+
+<a href="/checklist/{{ checklist.id }}/">Check again?</a>
+
+{% endblock %}
+</body>
+</html>
+

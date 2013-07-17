@@ -20,6 +20,8 @@ Also views should use render() instead of render_to_response() for auto adding r
     <ul>
     {% for checklist in checklists %}
         <li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
+    {% empty %}
+    	<li>No checklist in this list.</li>
     {% endfor %}
     </ul>
 
@@ -33,6 +35,9 @@ Also views should use render() instead of render_to_response() for auto adding r
 		</ul>
 
 	</div>
+	{% empty %}
+    	<li>No checklist in this list.</li>
+
 	{% endfor %}
 
 {% else %}
