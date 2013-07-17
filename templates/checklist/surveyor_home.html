@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+{% load url from future %}
+
+{% block content %}
+
+
+<!--
+Must regard user as 'user', NOT 'request.user'. Otherwise it wont recognize user being logged in
+Also views should use render() instead of render_to_response() for auto adding request context
+-->
+{% if user.is_authenticated %}
+    <p>Welcome {{ user.username }}, Thanks for logging in!</p>
+{% else %}
+    <p>Sorry, we dont recognize you as being logged in. Something wrong!</p>
+{% endif %}
+
+
+{% for checklist in checklists %}
+<div>
+    <h1>{{ checklist.title }}</h1>
+	<ul>
+	{% for item in checklist.item_set.all %}
+		<li>{{ item.item }}</li>
+	{% endfor %}
+	</ul>
+
+</div>
+{% endfor %}
+
+
+{% endblock %}
+</body>
+</html>
+

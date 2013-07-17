@@ -24,6 +24,25 @@ class Checklist(models.Model):
 		return self.pub_date.date() == datetime.date.today()
 	was_created_today.short_description = 'Created today?'
 
+class Item(models.Model):
+	checklist = models.ForeignKey(Checklist)
+	TYPE_CHOICES = (
+		('PT', 'Plan Title'),
+		('MB', 'Main Body'),
+		('DS', 'Deposit Statement'),
+		('ISA', 'Integrated Survey Area'),
+		('M', 'Miscellanous'),
+		('EP', 'Electronic Plan'),
+	)
+	itemType = models.CharField(max_length=5,choices=TYPE_CHOICES,default='PT')
+	item = models.CharField(max_length=100)
+
+	def __unicode__(self):
+		return self.item	
+
+	#def is_upperclass(self):
+	#	return self.year_in_school in (self.JUNIOR, self.SENIOR)
+	
 class PlanTitle(models.Model):
 	checklist = models.ForeignKey(Checklist)
 	item = models.CharField(max_length=100)
@@ -66,24 +85,7 @@ class ElectronicPlan(models.Model):
 	def __unicode__(self):
 		return self.item
 		
-class Item(models.Model):
-	checklist = models.ForeignKey(Checklist)
-	TYPE_CHOICES = (
-		('PT', 'Plan Title'),
-		('MB', 'Main Body'),
-		('DS', 'Deposit Statement'),
-		('ISA', 'Integrated Survey Area'),
-		('M', 'Miscellanous'),
-		('EP', 'Electronic Plan'),
-	)
-	itemType = models.CharField(max_length=5,choices=TYPE_CHOICES,default='PT')
-	item = models.CharField(max_length=100)
 
-	def __unicode__(self):
-		return self.item	
-
-	#def is_upperclass(self):
-	#	return self.year_in_school in (self.JUNIOR, self.SENIOR)
 		
 """
 from django.forms.fields import DateField, ChoiceField, MultipleChoiceField
