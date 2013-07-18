@@ -10,13 +10,13 @@
 {% if checklist %}
 	<h1>{{ checklist.title }}</h1>
 	<li>
+	<p>Status: {{ checklist.status }} where {{ checklist.STATUS_CHOICES }}</p>
+	<p>Assignee: {{ checklist.assignee.username }}</p>
 	<p>File number: {{ checklist.fileNum }}</p>
 	<p>Description: {{ checklist.description }}</p>
 	<p>Created Date: {{ checklist.create_date }}</p>
 	<p>Land District: {{ checklist.landDistrict }}</p>
 	<p>Address: {{ checklist.address }}</p>
-	<p>Assignee: {{ checklist.assignee.username }}</p>
-	<p>Status: {{checklist.status}} where {{checklist.STATUS_CHOICES}}</p>
 	</li>
 
 

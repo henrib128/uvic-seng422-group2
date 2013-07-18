@@ -1,54 +1,15 @@
 from django.contrib import admin
 
 # import app models
-#from checklist import models as cl
-#from checklist.models import ReviewChecklist
 from checklist.models import Checklist
 from checklist.models import Item
-from checklist.models import PlanTitle
-from checklist.models import MainBody
-from checklist.models import Scenery
-from checklist.models import DepositStatement
-from checklist.models import IntegratedSurveyArea
-from checklist.models import Miscellanous
-from checklist.models import ElectronicPlan
 
-#from checklist.models import SimpleForm
-
-
-# Inline classes for checklist items separated into sections
+# Inline classes for formatting display of One-to-Many relationship
 class ItemInline(admin.TabularInline):
     model = Item
     extra = 0
     
-class PlanTitleInline(admin.TabularInline):
-    model = PlanTitle
-    extra = 0
-
-class MainBodyInline(admin.TabularInline):
-    model = MainBody
-    extra = 0
-
-class SceneryInline(admin.TabularInline):
-    model = Scenery
-    extra = 0
-
-class DepositStatementInline(admin.TabularInline):
-    model = DepositStatement
-    extra = 0
-
-class IntegratedSurveyAreaInline(admin.TabularInline):
-    model = IntegratedSurveyArea
-    extra = 0
-
-class MiscellanousInline(admin.TabularInline):
-    model = Miscellanous
-    extra = 0
-
-class ElectronicPlanInline(admin.TabularInline):
-    model = ElectronicPlan
-    extra = 0
-
+# ModelAdmin classes for specifying how a Model is being displayed and structured on Admin page
 class ChecklistAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['status']}),
@@ -61,7 +22,6 @@ class ChecklistAdmin(admin.ModelAdmin):
         (None,               {'fields': ['address']}),
     ]
     inlines = [ItemInline]
-    #inlines = [ItemInline,PlanTitleInline,MainBodyInline,SceneryInline,DepositStatementInline,IntegratedSurveyAreaInline,MiscellanousInline,ElectronicPlanInline]
     list_display = ('title', 'assignee', 'landDistrict', 'create_date', 'status')
     list_filter = ['status', 'assignee', 'landDistrict', 'create_date']
     search_fields = ['title', 'assignnee']
@@ -73,13 +33,10 @@ class ChecklistAdmin(admin.ModelAdmin):
 admin.site.register(Checklist, ChecklistAdmin)
 
 
-
-
 # Modifying default UserAdmin behaviour to restrict 'add user' and 'change user' permission
 # not to let anyone but SuperUser to add or update SuperUser status
 # This is to avoid non-superuser to create superuser or to update them to super user (or add more permission to themselve)
 # One drawback is to create new manager or admin, they have to be super user
-
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
