@@ -109,7 +109,8 @@ ROOT_URLCONF = 'seng422gp2.urls'
 TEMPLATE_DIRS = (
 
     "/home/tri/seng422/seng422gp2/templates",
-    "/web/group2/seng422gp2/templates"
+    "/web/group2/seng422gp2/templates",
+    "/home/henri/422/seng422gp2/templates"
 
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -129,6 +130,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'polls',
     'checklist',
+    'login'
 )
 
 # A sample logging configuration. The only tangible logging
