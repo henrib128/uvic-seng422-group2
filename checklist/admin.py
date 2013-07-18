@@ -19,7 +19,7 @@ from checklist.models import ElectronicPlan
 # Inline classes for checklist items separated into sections
 class ItemInline(admin.TabularInline):
     model = Item
-    extra = 2
+    extra = 0
     
 class PlanTitleInline(admin.TabularInline):
     model = PlanTitle
@@ -51,24 +51,7 @@ class ElectronicPlanInline(admin.TabularInline):
 
 class ChecklistAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['assignee']}),
-        (None,               {'fields': ['fileNum']}),
-        (None,               {'fields': ['title']}),
-        (None,               {'fields': ['description']}),                
-        #('Date information', {'fields': ['create_date'], 'classes': ['collapse']}),
-        (None,               {'fields': ['create_date']}),
-        (None,               {'fields': ['landDistrict']}),
-        (None,               {'fields': ['address']}),
-    ]
-    inlines = [ItemInline,PlanTitleInline,MainBodyInline,SceneryInline,DepositStatementInline,IntegratedSurveyAreaInline,MiscellanousInline,ElectronicPlanInline]
-    list_display = ('title', 'assignee', 'create_date', 'was_created_today')
-    list_filter = ['assignee', 'title', 'landDistrict', 'create_date']
-    search_fields = ['title', 'assignnee']
-    date_hierarchy = 'create_date'
-
-"""
-class ReviewChecklistAdmin(admin.ModelAdmin):
-    fieldsets = [
+        (None,               {'fields': ['status']}),
         (None,               {'fields': ['assignee']}),
         (None,               {'fields': ['fileNum']}),
         (None,               {'fields': ['title']}),
@@ -76,18 +59,20 @@ class ReviewChecklistAdmin(admin.ModelAdmin):
         (None,               {'fields': ['create_date']}),
         (None,               {'fields': ['landDistrict']}),
         (None,               {'fields': ['address']}),
-        (None,               {'fields': ['is_approved']}),
     ]
     inlines = [ItemInline]
-    list_display = ('title', 'assignee', 'create_date')
-    list_filter = ['assignee', 'title', 'landDistrict', 'create_date']
+    #inlines = [ItemInline,PlanTitleInline,MainBodyInline,SceneryInline,DepositStatementInline,IntegratedSurveyAreaInline,MiscellanousInline,ElectronicPlanInline]
+    list_display = ('title', 'assignee', 'landDistrict', 'create_date', 'status')
+    list_filter = ['status', 'assignee', 'landDistrict', 'create_date']
     search_fields = ['title', 'assignnee']
     date_hierarchy = 'create_date'
-"""
 
+# Registering models to Admin page with ModleAdmin format (in this case Checklist and ChecklistAdmin)
+# All models that wish to be displayed in Admin page need to be registered
+# and all attributes that wish to be displayed in a model need to be in the ModelAdmin form
 admin.site.register(Checklist, ChecklistAdmin)
-#admin.site.register(ReviewChecklist, ReviewChecklistAdmin)
-#admin.site.register(SimpleForm)
+
+
 
 
 # Modifying default UserAdmin behaviour to restrict 'add user' and 'change user' permission

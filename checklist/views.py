@@ -160,11 +160,6 @@ def checklist_submit(request, checklist_id):
 		checklist.status = 'S'
 		checklist.save()
 		
-		# Add new review_checklist for manager to review
-		#review_checklist = ReviewChecklist(checklist.fileNum, checklist.title, checklist.description, \
-		#		checklist.create_date, checklist.landDistrict, checklist.address, checklist.assignee, checklist.is_approved)
-		#review_checklist.save()
-		
 		# Return to the same result page with submit message
 		submit_message = "Checklist is submited for review!"
 		return render(request,'checklist/checklist_result.html', \

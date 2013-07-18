@@ -9,24 +9,11 @@ import datetime
 
 
 # Create your models here.
-"""
-class ReviewChecklist(models.Model):
-	fileNum = ""
-	title = ""
-	description = ""
-	create_date = ""
-	landDistrict = ""
-	address = ""
-	assignee = models.ForeignKey(AutUser, blank=True, null=True)
-	APPROVE_CHOICES = (
-		('A', 'Approved'),
-		('R', 'Rejected'),
-	)
-	is_approved = models.CharField(max_length=1,choices=APPROVE_CHOICES,default='R')
-	
-	def __unicode__(self):
-		return self.title
-"""
+
+# Database model for Checklist
+# Checklist is associated with AuthUser as Many-to-One relationship
+# Checklist also has implicit One-to-Many relationship with Item model
+# Each checklist has status of 'New', 'Inprogress', 'Submited', 'Approved', or 'Rejected'
 class Checklist(models.Model):
 	fileNum = models.CharField(max_length=20)
 	title = models.CharField(max_length=100)
@@ -46,10 +33,10 @@ class Checklist(models.Model):
 	
 	def __unicode__(self):
 		return self.title
-	def was_created_today(self):
-		return self.pub_date.date() == datetime.date.today()
-	was_created_today.short_description = 'Created today?'
 
+# Database model for Item in the checklist
+# Item has many-to-one relationship with Checklist
+# Each item has status of 'Unanswered', 'Yes', or 'N/A'
 class Item(models.Model):
 	checklist = models.ForeignKey(Checklist)
 	TYPE_CHOICES = (
@@ -73,9 +60,10 @@ class Item(models.Model):
 	def __unicode__(self):
 		return self.item	
 
-	#def is_upperclass(self):
-	#	return self.year_in_school in (self.JUNIOR, self.SENIOR)
-	
+
+# Extra experimental database models for separate sections of an item
+# May not be needed as this complicates things
+# The only benefit is it looks nicer on the Admin manager page where each subsection has its own section	
 class PlanTitle(models.Model):
 	checklist = models.ForeignKey(Checklist)
 	item = models.CharField(max_length=100)
@@ -117,21 +105,7 @@ class ElectronicPlan(models.Model):
 	item = models.CharField(max_length=100)
 	def __unicode__(self):
 		return self.item
-		
+	
 
 		
-"""
-from django.forms.fields import DateField, ChoiceField, MultipleChoiceField
-from django.forms.widgets import RadioSelect, CheckboxSelectMultiple
-from django.forms.extras.widgets import SelectDateWidget
 
-BIRTH_YEAR_CHOICES = ('1980', '1981', '1982')
-FAVORITE_COLORS_CHOICES = (('blue', 'Blue'),
-							('green', 'Green'),
-							('black', 'Black'))
-
-class SimpleForm(forms.Form):
-	birth_year = DateField(widget=SelectDateWidget(years=BIRTH_YEAR_CHOICES))
-	favorite_colors = forms.MultipleChoiceField(required=False,
-		widget=CheckboxSelectMultiple, choices=FAVORITE_COLORS_CHOICES)
-"""
