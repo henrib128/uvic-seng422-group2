@@ -1,36 +1,34 @@
 # Required packages for http response and render
-from django.template import Context, loader
-from django.core.context_processors import csrf
+#from django.template import Context, loader
+#from django.core.context_processors import csrf
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth import authenticate, login, logout
-#from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 
 # Database related models
 from checklist.models import Checklist
 from checklist.models import Item
 
-# Create your view functions here.
+
+
+#################################################### Create your view functions here.
 
 # Function to display front page with login option
 def index(request):
 	# Call index.html
 	return render(request, 'checklist/index.html')
 
-# logout view
+# Function to perform logout and redisplay front page
 def logout_view(request):
 	logout(request)
 	message = "You have been logged out."
 	return render(request, 'checklist/index.html', {'message' : message})
-	
-#@login_required(login_url='/checklist')
-def login_view(request):
-	# csrf token
-	c = {}
-	c.update(csrf(request))
 
+# Function to perform login and redirect to surveyor home page or front page if invalid login
+def login_view(request):
 	# Extract user login info from indext to login page
 	username = request.POST['username']
 	password = request.POST['password']
@@ -58,7 +56,8 @@ def login_view(request):
 		message = "Invalid login information!"
 		return render(request, 'checklist/index.html', {'message' : message})
 
-# Function to display home view for user
+# Function to display home view for user, required user to logged in
+@login_required(login_url='/checklist/')
 def home(request):
 	# Get a list of checklists assigned to this user
 	aut_user = request.user
@@ -67,14 +66,15 @@ def home(request):
 	# Use render() for auto adding request context and csrf, html should refer user as 'user' (not 'request.user')
 	return render(request,'checklist/surveyor_home.html', {'checklists': checklists})
 		
-# Function to dislay detail view of a checklist_id 
+# Function to dislay detail view of a checklist_id, required user to logged in
+@login_required(login_url='/checklist/')
 def checklist_detail(request, checklist_id):
 	#p = get_object_or_404(Poll, pk=poll_id)
 	checklist = Checklist.objects.get(id=checklist_id)
 	return render(request,'checklist/checklist_detail.html', {'checklist': checklist})
 
-
-# Function to update items status of checklist 
+# Function to update items status of checklist, required user to logged in
+@login_required(login_url='/checklist/')
 def checklist_save(request, checklist_id):
 	#p = get_object_or_404(Poll, pk=poll_id)
 	checklist = Checklist.objects.get(id=checklist_id)
@@ -103,12 +103,14 @@ def checklist_save(request, checklist_id):
 		return HttpResponseRedirect(reverse('checklist.views.checklist_result', args=(checklist.id,)))
 		
 		
-# Function to display checklist result
+# Function to display checklist result, required user to logged in
+@login_required(login_url='/checklist/')
 def checklist_result(request, checklist_id):
 	checklist = Checklist.objects.get(id=checklist_id)
 	return render(request,'checklist/checklist_result.html', {'checklist': checklist})
 	   
-# Function to validate items of a checklist 
+# Function to validate items of a checklist, required user to logged in
+@login_required(login_url='/checklist/')
 def checklist_validate(request, checklist_id):
 	#p = get_object_or_404(Poll, pk=poll_id)
 	checklist = Checklist.objects.get(id=checklist_id)
@@ -135,7 +137,8 @@ def checklist_validate(request, checklist_id):
 					{'checklist': checklist, 'validate_message': validate_message})	
 
 
-# Function to submit checklist for review 
+# Function to submit checklist for review, required user to logged in
+@login_required(login_url='/checklist/')
 def checklist_submit(request, checklist_id):
 	#p = get_object_or_404(Poll, pk=poll_id)
 	checklist = Checklist.objects.get(id=checklist_id)
@@ -159,11 +162,6 @@ def checklist_submit(request, checklist_id):
 		# Set checklist status to 'submited'
 		checklist.status = 'S'
 		checklist.save()
-		
-		# Add new review_checklist for manager to review
-		#review_checklist = ReviewChecklist(checklist.fileNum, checklist.title, checklist.description, \
-		#		checklist.create_date, checklist.landDistrict, checklist.address, checklist.assignee, checklist.is_approved)
-		#review_checklist.save()
 		
 		# Return to the same result page with submit message
 		submit_message = "Checklist is submited for review!"

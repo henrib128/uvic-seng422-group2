@@ -1,74 +1,18 @@
 from django.contrib import admin
 
 # import app models
-#from checklist import models as cl
-#from checklist.models import ReviewChecklist
 from checklist.models import Checklist
 from checklist.models import Item
-from checklist.models import PlanTitle
-from checklist.models import MainBody
-from checklist.models import Scenery
-from checklist.models import DepositStatement
-from checklist.models import IntegratedSurveyArea
-from checklist.models import Miscellanous
-from checklist.models import ElectronicPlan
 
-#from checklist.models import SimpleForm
-
-
-# Inline classes for checklist items separated into sections
+# Inline classes for formatting display of One-to-Many relationship
 class ItemInline(admin.TabularInline):
     model = Item
-    extra = 2
+    extra = 0
     
-class PlanTitleInline(admin.TabularInline):
-    model = PlanTitle
-    extra = 0
-
-class MainBodyInline(admin.TabularInline):
-    model = MainBody
-    extra = 0
-
-class SceneryInline(admin.TabularInline):
-    model = Scenery
-    extra = 0
-
-class DepositStatementInline(admin.TabularInline):
-    model = DepositStatement
-    extra = 0
-
-class IntegratedSurveyAreaInline(admin.TabularInline):
-    model = IntegratedSurveyArea
-    extra = 0
-
-class MiscellanousInline(admin.TabularInline):
-    model = Miscellanous
-    extra = 0
-
-class ElectronicPlanInline(admin.TabularInline):
-    model = ElectronicPlan
-    extra = 0
-
+# ModelAdmin classes for specifying how a Model is being displayed and structured on Admin page
 class ChecklistAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['assignee']}),
-        (None,               {'fields': ['fileNum']}),
-        (None,               {'fields': ['title']}),
-        (None,               {'fields': ['description']}),                
-        #('Date information', {'fields': ['create_date'], 'classes': ['collapse']}),
-        (None,               {'fields': ['create_date']}),
-        (None,               {'fields': ['landDistrict']}),
-        (None,               {'fields': ['address']}),
-    ]
-    inlines = [ItemInline,PlanTitleInline,MainBodyInline,SceneryInline,DepositStatementInline,IntegratedSurveyAreaInline,MiscellanousInline,ElectronicPlanInline]
-    list_display = ('title', 'assignee', 'create_date', 'was_created_today')
-    list_filter = ['assignee', 'title', 'landDistrict', 'create_date']
-    search_fields = ['title', 'assignnee']
-    date_hierarchy = 'create_date'
-
-"""
-class ReviewChecklistAdmin(admin.ModelAdmin):
-    fieldsets = [
+        (None,               {'fields': ['status']}),
         (None,               {'fields': ['assignee']}),
         (None,               {'fields': ['fileNum']}),
         (None,               {'fields': ['title']}),
@@ -76,25 +20,23 @@ class ReviewChecklistAdmin(admin.ModelAdmin):
         (None,               {'fields': ['create_date']}),
         (None,               {'fields': ['landDistrict']}),
         (None,               {'fields': ['address']}),
-        (None,               {'fields': ['is_approved']}),
     ]
     inlines = [ItemInline]
-    list_display = ('title', 'assignee', 'create_date')
-    list_filter = ['assignee', 'title', 'landDistrict', 'create_date']
+    list_display = ('title', 'assignee', 'landDistrict', 'create_date', 'status')
+    list_filter = ['status', 'assignee', 'landDistrict', 'create_date']
     search_fields = ['title', 'assignnee']
     date_hierarchy = 'create_date'
-"""
 
+# Registering models to Admin page with ModleAdmin format (in this case Checklist and ChecklistAdmin)
+# All models that wish to be displayed in Admin page need to be registered
+# and all attributes that wish to be displayed in a model need to be in the ModelAdmin form
 admin.site.register(Checklist, ChecklistAdmin)
-#admin.site.register(ReviewChecklist, ReviewChecklistAdmin)
-#admin.site.register(SimpleForm)
 
 
 # Modifying default UserAdmin behaviour to restrict 'add user' and 'change user' permission
 # not to let anyone but SuperUser to add or update SuperUser status
 # This is to avoid non-superuser to create superuser or to update them to super user (or add more permission to themselve)
 # One drawback is to create new manager or admin, they have to be super user
-
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 

@@ -24,7 +24,9 @@
     <p>Can't find checklist.</p>
 {% endif %}
 
-<a href="/checklist/{{ checklist.id }}/">Return to checklist detail</a><br>
+{% if checklist.status == "I" %}
+	<a href="/checklist/{{ checklist.id }}/">Return to checklist detail</a><br>
+{% endif %}
 
 <form action="/checklist/{{checklist.id}}/validate/" method="post">
 {% csrf_token %}
