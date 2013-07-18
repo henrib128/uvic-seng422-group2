@@ -2,6 +2,7 @@ from django.contrib import admin
 
 # import app models
 #from checklist import models as cl
+#from checklist.models import ReviewChecklist
 from checklist.models import Checklist
 from checklist.models import Item
 from checklist.models import PlanTitle
@@ -65,8 +66,27 @@ class ChecklistAdmin(admin.ModelAdmin):
     search_fields = ['title', 'assignnee']
     date_hierarchy = 'create_date'
 
-   
+"""
+class ReviewChecklistAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None,               {'fields': ['assignee']}),
+        (None,               {'fields': ['fileNum']}),
+        (None,               {'fields': ['title']}),
+        (None,               {'fields': ['description']}),                
+        (None,               {'fields': ['create_date']}),
+        (None,               {'fields': ['landDistrict']}),
+        (None,               {'fields': ['address']}),
+        (None,               {'fields': ['is_approved']}),
+    ]
+    inlines = [ItemInline]
+    list_display = ('title', 'assignee', 'create_date')
+    list_filter = ['assignee', 'title', 'landDistrict', 'create_date']
+    search_fields = ['title', 'assignnee']
+    date_hierarchy = 'create_date'
+"""
+
 admin.site.register(Checklist, ChecklistAdmin)
+#admin.site.register(ReviewChecklist, ReviewChecklistAdmin)
 #admin.site.register(SimpleForm)
 
 

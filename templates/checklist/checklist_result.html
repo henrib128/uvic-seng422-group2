@@ -7,6 +7,8 @@
 
 {% if checklist %}
 	<h1>{{ checklist.title }}</h1>
+	{% if error_message %}<p><strong>{{error_message}}</strong></p>{% endif %}
+	
 	<ul>
 	{% for item in checklist.item_set.all %}
 		<li>{{ item.item }} -- {{ item.itemStatus }}</li>
@@ -21,6 +23,22 @@
 {% endif %}
 
 <a href="/checklist/{{ checklist.id }}/">Check again?</a>
+
+<form action="/checklist/{{checklist.id}}/validate/" method="post">
+{% csrf_token %}
+	<input type="submit" value="Validate" />
+	{% if is_validated %}
+		<p>Checklist is validated! All items are answered.</p>
+	{% else %}
+    	<p>Checklist is not validated! At least one item is unanswered.</p>
+	{% endif %}
+</form>
+
+<form action="/checklist/{{checklist.id}}/submit/" method="post">
+{% csrf_token %}
+	<input type="submit" value="Submit for Review" />
+	{% if prompt_message %}<p>{{ prompt_message }}</p>{% endif %}
+</form>
 
 {% endblock %}
 </body>

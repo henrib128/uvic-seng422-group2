@@ -19,6 +19,8 @@ urlpatterns = patterns('',
 	url(r'^checklist/(?P<checklist_id>\d+)/$', 'checklist.views.checklist_detail'),	
 	url(r'^checklist/(?P<checklist_id>\d+)/save/$', 'checklist.views.checklist_save'),
 	url(r'^checklist/(?P<checklist_id>\d+)/result/$', 'checklist.views.checklist_result'),
+	url(r'^checklist/(?P<checklist_id>\d+)/validate/$', 'checklist.views.checklist_validate'),
+	url(r'^checklist/(?P<checklist_id>\d+)/submit/$', 'checklist.views.checklist_submit'),
 		
 	# url(r'^$', 'seng422gp2.views.home', name='home'),
 	# url(r'^seng422gp2/', include('seng422gp2.foo.urls')),

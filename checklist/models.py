@@ -9,6 +9,24 @@ import datetime
 
 
 # Create your models here.
+"""
+class ReviewChecklist(models.Model):
+	fileNum = ""
+	title = ""
+	description = ""
+	create_date = ""
+	landDistrict = ""
+	address = ""
+	assignee = models.ForeignKey(AutUser, blank=True, null=True)
+	APPROVE_CHOICES = (
+		('A', 'Approved'),
+		('R', 'Rejected'),
+	)
+	is_approved = models.CharField(max_length=1,choices=APPROVE_CHOICES,default='R')
+	
+	def __unicode__(self):
+		return self.title
+"""
 class Checklist(models.Model):
 	fileNum = models.CharField(max_length=20)
 	title = models.CharField(max_length=100)
@@ -17,6 +35,8 @@ class Checklist(models.Model):
 	landDistrict = models.CharField(max_length=100)
 	address = models.CharField(max_length=100)
 	assignee = models.ForeignKey(AutUser, blank=True, null=True)
+	is_being_reviewed = False
+	is_approved = False
 	
 	def __unicode__(self):
 		return self.title
