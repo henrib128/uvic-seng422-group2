@@ -35,8 +35,14 @@ class Checklist(models.Model):
 	landDistrict = models.CharField(max_length=100)
 	address = models.CharField(max_length=100)
 	assignee = models.ForeignKey(AutUser, blank=True, null=True)
-	is_being_reviewed = False
-	is_approved = False
+	STATUS_CHOICES = (
+		('N', 'New'),
+		('I', 'Inprogress'),
+		('S', 'Submited'),
+		('A', 'Approved'),
+		('R', 'Rejected'),
+	)
+	status = models.CharField(max_length=1,choices=STATUS_CHOICES,default='N')
 	
 	def __unicode__(self):
 		return self.title

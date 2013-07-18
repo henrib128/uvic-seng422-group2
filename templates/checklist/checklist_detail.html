@@ -5,25 +5,29 @@
 
 {% block content %}
 
+<a href="/checklist/home/">Home page</a>
+
 {% if checklist %}
-	<h1>{{checklist.title}}</h1>
-	<ul>
-	{% for item in checklist.item_set.all %}
-		<li>{{item.item}}</li>
-	{% empty %}
-    	<li>No item in this list.</li>
-    {% endfor %}
-	</ul>
+	<h1>{{ checklist.title }}</h1>
+	<li>
+	<p>File number: {{ checklist.fileNum }}</p>
+	<p>Description: {{ checklist.description }}</p>
+	<p>Created Date: {{ checklist.create_date }}</p>
+	<p>Land District: {{ checklist.landDistrict }}</p>
+	<p>Address: {{ checklist.address }}</p>
+	<p>Assignee: {{ checklist.assignee.username }}</p>
+	<p>Status: {{checklist.status}} where {{checklist.STATUS_CHOICES}}</p>
+	</li>
 
 
-	<h1>{{checklist.title}}</h1>
-	{% if error_message %}<p><strong>{{error_message}}</strong></p>{% endif %}
+	<h2>Checklist Items</h2>
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
 	{% for item in checklist.item_set.all %}
 
 		<form action="/checklist/{{checklist.id}}/save/" method="post">
 		{% csrf_token %}
-			<li>{{item.item}}
+			<li>{{ item.item }}
 			<input type="radio" name="choice" value="U" {% if item.itemStatus == "U" %}checked="true"{% endif %}/>Unanswered
 			<input type="radio" name="choice" value="Y" {% if item.itemStatus == "Y" %}checked="true"{% endif %}/>Yes
 			<input type="radio" name="choice" value="N" {% if item.itemStatus == "N" %}checked="true"{% endif %}/>NA

@@ -16,12 +16,14 @@ Also views should use render() instead of render_to_response() for auto adding r
     <p>Sorry, we dont recognize you as being logged in. Something wrong!</p>
 {% endif %}
 
+<a href="/checklist/logout/">Logout</a>
+
 {% if checklists %}
 	<div>
-    	<h1>Checklists in progress:</h1>
+    	<h1>New checklists:</h1>
 		<ul>
 		{% for checklist in checklists %}
-		    {% if not checklist.is_being_review %}
+		    {% if checklist.status == "N" %}
 		    	<li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
 		    {% endif %}
 		{% empty %}
@@ -31,10 +33,23 @@ Also views should use render() instead of render_to_response() for auto adding r
 	</div>
 	
 	<div>
-    	<h1>Checklists in review:</h1>
+    	<h1>Checklists in progress:</h1>
 		<ul>
 		{% for checklist in checklists %}
-		    {% if checklist.is_being_review %}
+		    {% if checklist.status == "I" %}
+		    	<li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
+		    {% endif %}
+		{% empty %}
+			<li>No checklist in this list.</li>
+		{% endfor %}
+		</ul>
+	</div>
+	
+	<div>
+    	<h1>Checklists submitted for review:</h1>
+		<ul>
+		{% for checklist in checklists %}
+		    {% if checklist.status == "S" %}
 		    <li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
 		    {% endif %}
 		{% empty %}

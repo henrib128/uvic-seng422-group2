@@ -12,6 +12,7 @@
 <form method="post" action="{% url 'checklist.views.login_view' %}">
 {% csrf_token %}
 
+{% if message %}<p>{{ message }}</p>{% endif %}
 <table>
 <tr>
     <td>User name</td>

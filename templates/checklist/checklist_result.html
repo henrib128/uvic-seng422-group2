@@ -5,6 +5,8 @@
 
 {% block content %}
 
+<a href="/checklist/home/">Home page</a>
+
 {% if checklist %}
 	<h1>{{ checklist.title }}</h1>
 	{% if error_message %}<p><strong>{{error_message}}</strong></p>{% endif %}
@@ -22,7 +24,7 @@
     <p>Can't find checklist.</p>
 {% endif %}
 
-<a href="/checklist/{{ checklist.id }}/">Check again?</a>
+<a href="/checklist/{{ checklist.id }}/">Return to checklist detail</a><br>
 
 <form action="/checklist/{{checklist.id}}/validate/" method="post">
 {% csrf_token %}

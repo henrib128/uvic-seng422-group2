@@ -14,20 +14,16 @@ from checklist.models import Item
 
 # Create your view functions here.
 
+# Function to display front page with login option
+def index(request):
+	# Call index.html
+	return render(request, 'checklist/index.html')
+
 # logout view
 def logout_view(request):
 	logout(request)
-
-def index(request):
-	# First logout current user
-	#logout_view(request)
-	
-	# csrf token	
-	c = {}
-	c.update(csrf(request))
-	
-	# Call index.html
-	return render_to_response('checklist/index.html',c)
+	message = "You have been logged out."
+	return render(request, 'checklist/index.html', {'message' : message})
 	
 #@login_required(login_url='/checklist')
 def login_view(request):
@@ -55,11 +51,22 @@ def login_view(request):
 			
 		else:
 			# Return a 'disabled account' error message
-			return HttpResponse("Unactive account.",c)
+			message = "Your account is unactive. Please contact your admin."
+			return render(request, 'checklist/index.html', {'message' : message})
 	else:
 		# Return an 'invalid login' error message.
-		return HttpResponse("Invalid login.",c)
+		message = "Invalid login information!"
+		return render(request, 'checklist/index.html', {'message' : message})
 
+# Function to display home view for user
+def home(request):
+	# Get a list of checklists assigned to this user
+	aut_user = request.user
+	checklists = aut_user.checklist_set.all().order_by('-create_date')
+
+	# Use render() for auto adding request context and csrf, html should refer user as 'user' (not 'request.user')
+	return render(request,'checklist/surveyor_home.html', {'checklists': checklists})
+		
 # Function to dislay detail view of a checklist_id 
 def checklist_detail(request, checklist_id):
 	#p = get_object_or_404(Poll, pk=poll_id)
@@ -83,6 +90,10 @@ def checklist_save(request, checklist_id):
 		return render(request,'checklist/checklist_detail.html', \
 					{'checklist': checklist, 'error_message': error_message})	
 	else:
+		# Set checklist status to 'Inprogress'
+		checklist.status = 'I'
+		checklist.save()
+		
 		# Save selected choice to database
 		selected_item.itemStatus = selected_choice
 		selected_item.save()
@@ -145,15 +156,14 @@ def checklist_submit(request, checklist_id):
 		if item.itemStatus == 'U': is_validated = False
 		
 	if is_validated:
-		"""
-		# Set checklist is_being_reviewed flag to true to prevent further modification
-		checklist.is_being_reviewed = True
+		# Set checklist status to 'submited'
+		checklist.status = 'S'
+		checklist.save()
 		
 		# Add new review_checklist for manager to review
-		review_checklist = ReviewChecklist(checklist.fileNum, checklist.title, checklist.description, \
-				checklist.create_date, checklist.landDistrict, checklist.address, checklist.assignee, checklist.is_approved)
-		review_checklist.save()
-		"""
+		#review_checklist = ReviewChecklist(checklist.fileNum, checklist.title, checklist.description, \
+		#		checklist.create_date, checklist.landDistrict, checklist.address, checklist.assignee, checklist.is_approved)
+		#review_checklist.save()
 		
 		# Return to the same result page with submit message
 		submit_message = "Checklist is submited for review!"
