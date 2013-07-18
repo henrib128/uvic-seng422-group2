@@ -80,7 +80,8 @@ def checklist_save(request, checklist_id):
 	except (KeyError, Item.DoesNotExist):
 		# Redisplay the checklist detail form.
 		error_message = "You didn't select a choice."
-		return render(request,'checklist/checklist_detail.html', {'checklist': checklist, 'error_message': error_message})	
+		return render(request,'checklist/checklist_detail.html', \
+					{'checklist': checklist, 'error_message': error_message})	
 	else:
 		# Save selected choice to database
 		selected_item.itemStatus = selected_choice
@@ -105,19 +106,22 @@ def checklist_validate(request, checklist_id):
 	items = checklist.item_set.all()
 	# Check if there is any item unanswered
 	if items is None:
+		# Return to the same result page with error message
 		error_message = "Checklist is empty!"
-		return render(request,'checklist/checklist_result.html', {'checklist': checklist, 'error_message': error_message})
+		return render(request,'checklist/checklist_result.html', \
+					{'checklist': checklist, 'error_message': error_message})
+
 	# Check if all items of this checklist have status of yes or n/a
 	is_validated = True
 	for item in items:
 		# Set is_validated flag to False if any item is 'Unanswered'
 		if item.itemStatus == 'U': is_validated = False
 	
-	# Always return an HttpResponseRedirect after successfully dealing
-	# with POST data. This prevents data from being posted twice if a
-	# user hits the Back button.
-	#return HttpResponseRedirect(reverse('checklist.views.checklist_result', args=(checklist.id, {'is_validated' : is_validated})))	
-	return render(request,'checklist/checklist_result.html', {'checklist': checklist, 'is_validated': is_validated})	
+	# Return to the same result page with validate message
+	if is_validated: validate_message = "Checklist is validated! All items are answered."
+	else: validate_message = "Checklist is not validated! At least one item is unanswered."
+	return render(request,'checklist/checklist_result.html', \
+					{'checklist': checklist, 'validate_message': validate_message})	
 
 
 # Function to submit checklist for review 
@@ -129,8 +133,11 @@ def checklist_submit(request, checklist_id):
 	items = checklist.item_set.all()
 	# Check if there is any item unanswered
 	if items is None:
+		# Return to the same result page with error message
 		error_message = "Checklist is empty!"
-		return render(request,'checklist/checklist_result.html', {'checklist': checklist, 'error_message': error_message})
+		return render(request,'checklist/checklist_result.html', \
+					{'checklist': checklist, 'error_message': error_message})
+
 	# Check if all items of this checklist have status of yes or n/a
 	is_validated = True
 	for item in items:
@@ -148,14 +155,14 @@ def checklist_submit(request, checklist_id):
 		review_checklist.save()
 		"""
 		
-		# Always return an HttpResponseRedirect after successfully dealing
-		# with POST data. This prevents data from being posted twice if a
-		# user hits the Back button.
-		prompt_message = "Checklist is submited for review!"
-		return render(request,'checklist/checklist_result.html', {'checklist': checklist, 'prompt_message': prompt_message})
+		# Return to the same result page with submit message
+		submit_message = "Checklist is submited for review!"
+		return render(request,'checklist/checklist_result.html', \
+					{'checklist': checklist, 'submit_message': submit_message})
 	else:
-		# Return with error
-		error_message = "Checklist is not validated! Please complete checklist before submition."
-		return render(request,'checklist/checklist_result.html', {'checklist': checklist, 'error_message': error_message})
+		# Return to the same result page with submit message
+		submit_message = "Checklist is not validated! Please complete checklist before submition."
+		return render(request,'checklist/checklist_result.html', \
+					{'checklist': checklist, 'submit_message': submit_message})
 		
 

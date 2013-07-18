@@ -17,29 +17,32 @@ Also views should use render() instead of render_to_response() for auto adding r
 {% endif %}
 
 {% if checklists %}
-    <ul>
-    {% for checklist in checklists %}
-        <li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
-    {% empty %}
-    	<li>No checklist in this list.</li>
-    {% endfor %}
-    </ul>
-
-	{% for checklist in checklists %}
 	<div>
-		<h1>{{ checklist.title }}</h1>
+    	<h1>Checklists in progress:</h1>
 		<ul>
-		{% for item in checklist.item_set.all %}
-			<li>{{ item.item }}</li>
+		{% for checklist in checklists %}
+		    {% if not checklist.is_being_review %}
+		    	<li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
+		    {% endif %}
+		{% empty %}
+			<li>No checklist in this list.</li>
 		{% endfor %}
 		</ul>
-
 	</div>
-	{% empty %}
-    	<li>No checklist in this list.</li>
-
-	{% endfor %}
-
+	
+	<div>
+    	<h1>Checklists in review:</h1>
+		<ul>
+		{% for checklist in checklists %}
+		    {% if checklist.is_being_review %}
+		    <li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
+		    {% endif %}
+		{% empty %}
+			<li>No checklist in this list.</li>
+		{% endfor %}
+		</ul>
+	</div>
+	
 {% else %}
     <p>No checklist is assigned to you.</p>
 {% endif %}
