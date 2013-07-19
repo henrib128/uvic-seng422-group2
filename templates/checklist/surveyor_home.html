@@ -21,7 +21,7 @@ Also views should use render() instead of render_to_response() for auto adding r
 {% if checklists %}
 	<div>
     	<h1><span style="color:green;font-weight:bold">Assigned Checklist Table</span></h1>
-		<table border="1">
+		<table width="100%" border="0">
 			<tr><th>Title</th><th>Assignee</th><th>District</th><th>Date Created</th><th>Status</th></tr>
 			{% for checklist in checklists %}
 				<tr>
