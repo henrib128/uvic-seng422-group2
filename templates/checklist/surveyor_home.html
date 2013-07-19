@@ -56,7 +56,7 @@ Also views should use render() instead of render_to_response() for auto adding r
 		<ul>
 		{% for checklist in checklists %}
 		    {% if checklist.status == "S" %}
-		    <li>{{ checklist.title }}</li>
+			    <li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
 		    {% endif %}
 		{% empty %}
 			<li>No checklist in this list.</li>
@@ -69,7 +69,7 @@ Also views should use render() instead of render_to_response() for auto adding r
 		<ul>
 		{% for checklist in checklists %}
 		    {% if checklist.status == "A" %}
-		    <li>{{ checklist.title }}</li>
+			    <li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
 		    {% endif %}
 		{% empty %}
 			<li>No checklist in this list.</li>
