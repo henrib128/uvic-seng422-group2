@@ -20,79 +20,32 @@ Also views should use render() instead of render_to_response() for auto adding r
 
 {% if checklists %}
 	<div>
-    	<h1>New checklists:</h1>
-		<ul>
-		{% for checklist in checklists %}
-		    {% if checklist.status == "N" %}
-		    	<li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
-		    {% endif %}
-		{% empty %}
-			<li>No checklist in this list.</li>
-		{% endfor %}
-		</ul>
-	</div>
-	
-	<div>
-    	<h1>Checklists in progress:</h1>
-		<ul>
-		{% for checklist in checklists %}
-		    {% if checklist.status == "I" %}
-		    	<li>
-		    		<a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a>
-		    		<p>Assignee: {{ checklist.assignee.username }}</p>
-		    		<p>LandDistrict: {{ checklist.landDistrict }}</p>
-		    		<p>Date Created: {{ checklist.create_date }}</p>
-		    		<p>Status: {{ checklist.status }}</p>		    		
-		    	</li>
-		    {% endif %}
-		{% empty %}
-			<li>No checklist in this list.</li>
-		{% endfor %}
-		</ul>
-	</div>
-	
-	<div>
-    	<h1>Checklists submitted for review:</h1>
-		<ul>
-		{% for checklist in checklists %}
-		    {% if checklist.status == "S" %}
-			    <li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
-		    {% endif %}
-		{% empty %}
-			<li>No checklist in this list.</li>
-		{% endfor %}
-		</ul>
-	</div>
-
-	<div>
-    	<h1>Checklists approved:</h1>
-		<ul>
-		{% for checklist in checklists %}
-		    {% if checklist.status == "A" %}
-			    <li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
-		    {% endif %}
-		{% empty %}
-			<li>No checklist in this list.</li>
-		{% endfor %}
-		</ul>
-	</div>
-
-	<div>
-    	<h1>Checklists rejected to be resubmit:</h1>
-		<ul>
-		{% for checklist in checklists %}
-		    {% if checklist.status == "R" %}
-		    	<li><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></li>
-		    {% endif %}
-		{% empty %}
-			<li>No checklist in this list.</li>
-		{% endfor %}
-		</ul>
+    	<h1><span style="color:green;font-weight:bold">Assigned Checklist Table</span></h1>
+		<table border="1">
+			<tr><th>Title</th><th>Assignee</th><th>District</th><th>Date Created</th><th>Status</th></tr>
+			{% for checklist in checklists %}
+				<tr>
+				<td><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></td>
+				<td>{{ checklist.assignee.username }}</td>
+				<td>{{ checklist.landDistrict }}</td>
+				<td>{{ checklist.create_date }}</td>
+				{% if checklist.status == "N" %}<td><span style="color:yellow">New</span></td>{% endif %}
+				{% if checklist.status == "I" %}<td><span style="color:blue">Inprogress</span></td>{% endif %}
+				{% if checklist.status == "S" %}<td><span style="color:orange">Submited</span></td>{% endif %}
+				{% if checklist.status == "A" %}<td><span style="color:green">Approved</span></td>{% endif %}
+				{% if checklist.status == "R" %}<td><span style="color:red">Rejected</span></td>{% endif %}
+				<tr>
+			{% empty %}
+				<li>No checklist in this list.</li>
+			{% endfor %}
+		</table>
 	</div>
 	
 {% else %}
     <p>No checklist is assigned to you.</p>
 {% endif %}
+
+
 
 
 

@@ -14,7 +14,13 @@
 	<table border="1">
 		<tr><th>Field</th><th>Detail</th></tr>
 		<tr><td>Title</td><td>{{ checklist.title }}</td></tr>		
-		<tr><td>Status</td><td>{{ checklist.status }}</td></tr>
+		<tr><td>Status</td>
+		{% if checklist.status == "N" %}<td><span style="color:yellow">New</span></td>{% endif %}
+		{% if checklist.status == "I" %}<td><span style="color:blue">Inprogress</span></td>{% endif %}
+		{% if checklist.status == "S" %}<td><span style="color:orange">Submited</span></td>{% endif %}
+		{% if checklist.status == "A" %}<td><span style="color:green">Approved</span></td>{% endif %}
+		{% if checklist.status == "R" %}<td><span style="color:red">Rejected</span></td>{% endif %}
+		</tr>
 		<tr><td>Assignee</td><td>{{ checklist.assignee.username }}</td></tr>
 		<tr><td>File number</td><td>{{ checklist.fileNum }}</td></tr>
 		<tr><td>Description</td><td>{{ checklist.description }}</td></tr>
@@ -35,12 +41,15 @@
 		<tr>
 			<td>{{ item.item }}</td>
 			{% if checklist.status != "S" and checklist.status != "A" %}
-				<td><input type="radio" name="{{ item.id }}" value="U" {% if item.itemStatus == "U" %}checked="true"{% endif %}/>Unanswered
-					<input type="radio" name="{{ item.id }}" value="Y" {% if item.itemStatus == "Y" %}checked="true"{% endif %}/>Yes
-					<input type="radio" name="{{ item.id }}" value="N" {% if item.itemStatus == "N" %}checked="true"{% endif %}/>NA
+				<td><input type="radio" name="{{ item.id }}" value="U" {% if item.itemStatus == "U" %}checked="true"{% endif %}/>
+															<span style="color:red">Unanswered</span>
+					<input type="radio" name="{{ item.id }}" value="Y" {% if item.itemStatus == "Y" %}checked="true"{% endif %}/><span style="color:green">Yes</span>
+					<input type="radio" name="{{ item.id }}" value="N" {% if item.itemStatus == "N" %}checked="true"{% endif %}/><span style="color:blue">N/A</span>
 				</td>
 			{% else %}
-				<td>{{ item.itemStatus }}</td>
+				{% if item.itemStatus == "U" %}<td><span style="color:red">Unanswered</span></td>{% endif %}
+				{% if item.itemStatus == "Y" %}<td><span style="color:green">Yes</span></td>{% endif %}
+				{% if item.itemStatus == "N" %}<td><span style="color:blue">Not Applicable</span></td>{% endif %}
 			{% endif %}	
 		</tr>
 		{% empty %}

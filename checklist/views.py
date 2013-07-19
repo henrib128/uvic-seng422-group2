@@ -41,7 +41,7 @@ def login_view(request):
 		
 			# Get a list of checklists assigned to this user
 			aut_user = request.user
-			checklists = aut_user.checklist_set.all().order_by('-create_date')
+			checklists = aut_user.checklist_set.all().order_by('-status','-create_date')
 		
 			# Use render() for auto adding request context and csrf, html should refer user as 'user' (not 'request.user')
 			return render(request,'checklist/surveyor_home.html', {'checklists': checklists})
