@@ -14,7 +14,6 @@ urlpatterns = patterns('',
 	url(r'^checklist/logout/$', 'checklist.views.logout_view'),	
 	url(r'^checklist/home/$', 'checklist.views.home'),
 	url(r'^checklist/(?P<checklist_id>\d+)/$', 'checklist.views.checklist_detail'),	
-	url(r'^checklist/(?P<checklist_id>\d+)/save/$', 'checklist.views.checklist_save'),
 	url(r'^checklist/(?P<checklist_id>\d+)/validate/$', 'checklist.views.checklist_validate'),
 	url(r'^checklist/(?P<checklist_id>\d+)/submit/$', 'checklist.views.checklist_submit'),
 		

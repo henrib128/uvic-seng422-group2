@@ -73,49 +73,37 @@ def checklist_detail(request, checklist_id):
 	checklist = Checklist.objects.get(id=checklist_id)
 	return render(request,'checklist/checklist_detail.html', {'checklist': checklist})
 
-# Function to update items status of checklist, required user to logged in
+		
+# Function to save and validate items of a checklist, required user to logged in
 @login_required(login_url='/checklist/')
-def checklist_save(request, checklist_id):
+def checklist_validate(request, checklist_id):
 	#p = get_object_or_404(Poll, pk=poll_id)
 	checklist = Checklist.objects.get(id=checklist_id)
 
 	# Set checklist status to 'Inprogress'
 	checklist.status = 'I'
 	checklist.save()
-		
-	# Go through all item and update its status
-	for item in checklist.item_set.all():
-		# Save selected choice to database
-		if str(item.id) in request.POST:
-			#return render(request,'checklist/checklist_detail.html', {'checklist': checklist})
-			item_choice = request.POST[str(item.id)]
-			item.itemStatus = item_choice
-			item.save()
-
-	# Always return an HttpResponseRedirect after successfully dealing
-	# with POST data. This prevents data from being posted twice if a
-	# user hits the Back button.
-	return HttpResponseRedirect(reverse('checklist.views.checklist_detail', args=(checklist.id,)))
-		
-		
-# Function to validate items of a checklist, required user to logged in
-@login_required(login_url='/checklist/')
-def checklist_validate(request, checklist_id):
-	#p = get_object_or_404(Poll, pk=poll_id)
-	checklist = Checklist.objects.get(id=checklist_id)
 	
 	# Retrieve all items of this checklist
 	items = checklist.item_set.all()
+	
 	# Check if there is any item unanswered
 	if items is None:
-		# Return to the same result page with error message
+		# Return to the same detail page with error message
 		error_message = "Checklist is empty!"
 		return render(request,'checklist/checklist_detail.html', \
 					{'checklist': checklist, 'error_message': error_message})
-
-	# Check if all items of this checklist have status of yes or n/a
+					
+	# Go through all item and update its status
+	# Also check if all items are anwered
 	is_validated = True
 	for item in items:
+		# Save selected choice to database
+		if str(item.id) in request.POST:
+			item_choice = request.POST[str(item.id)]
+			item.itemStatus = item_choice
+			item.save()
+		
 		# Set is_validated flag to False if any item is 'Unanswered'
 		if item.itemStatus == 'U': is_validated = False
 	
@@ -123,7 +111,7 @@ def checklist_validate(request, checklist_id):
 	if is_validated: validate_message = "Checklist is validated! All items are answered."
 	else: validate_message = "Checklist is not validated! At least one item is unanswered."
 	return render(request,'checklist/checklist_detail.html', \
-					{'checklist': checklist, 'validate_message': validate_message})	
+					{'checklist': checklist, 'validate_message': validate_message, 'is_validated' : is_validated})	
 
 
 # Function to submit checklist for review, required user to logged in
@@ -155,11 +143,11 @@ def checklist_submit(request, checklist_id):
 		# Return to the same result page with submit message
 		submit_message = "Checklist is submited for review!"
 		return render(request,'checklist/checklist_detail.html', \
-					{'checklist': checklist, 'submit_message': submit_message})
+					{'checklist': checklist, 'submit_message': submit_message, 'is_submited' : True})
 	else:
 		# Return to the same result page with submit message
 		submit_message = "Checklist is not validated! Please complete checklist before submition."
 		return render(request,'checklist/checklist_detail.html', \
-					{'checklist': checklist, 'submit_message': submit_message})
+					{'checklist': checklist, 'submit_message': submit_message, 'is_submited' : False})
 		
 
