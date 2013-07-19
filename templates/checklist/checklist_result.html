@@ -11,6 +11,16 @@
 	<h1>{{ checklist.title }}</h1>
 	{% if error_message %}<p><strong>{{error_message}}</strong></p>{% endif %}
 	
+	<li>
+	<p>Status: {{ checklist.status }} where {{ checklist.STATUS_CHOICES }}</p>
+	<p>Assignee: {{ checklist.assignee.username }}</p>
+	<p>File number: {{ checklist.fileNum }}</p>
+	<p>Description: {{ checklist.description }}</p>
+	<p>Created Date: {{ checklist.create_date }}</p>
+	<p>Land District: {{ checklist.landDistrict }}</p>
+	<p>Address: {{ checklist.address }}</p>
+	</li>
+	
 	<ul>
 	{% for item in checklist.item_set.all %}
 		<li>{{ item.item }} -- {{ item.itemStatus }}</li>

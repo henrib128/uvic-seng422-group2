@@ -78,29 +78,24 @@ def checklist_detail(request, checklist_id):
 def checklist_save(request, checklist_id):
 	#p = get_object_or_404(Poll, pk=poll_id)
 	checklist = Checklist.objects.get(id=checklist_id)
-	try:
-		selected_choice = request.POST['choice']
-		item_id = request.POST['item'].strip('/')
-		#return HttpResponse("Item id: %s and choice: %s" % (item_id,selected_choice))
-		selected_item = checklist.item_set.get(id=item_id)
 
-	except (KeyError, Item.DoesNotExist):
-		# Redisplay the checklist detail form.
-		error_message = "You didn't select a choice."
-		return render(request,'checklist/checklist_detail.html', \
-					{'checklist': checklist, 'error_message': error_message})	
-	else:
-		# Set checklist status to 'Inprogress'
-		checklist.status = 'I'
-		checklist.save()
+	# Set checklist status to 'Inprogress'
+	checklist.status = 'I'
+	checklist.save()
 		
+	# Go through all item and update its status
+	for item in checklist.item_set.all():
 		# Save selected choice to database
-		selected_item.itemStatus = selected_choice
-		selected_item.save()
-		# Always return an HttpResponseRedirect after successfully dealing
-		# with POST data. This prevents data from being posted twice if a
-		# user hits the Back button.
-		return HttpResponseRedirect(reverse('checklist.views.checklist_result', args=(checklist.id,)))
+		if str(item.id) in request.POST:
+			#return render(request,'checklist/checklist_detail.html', {'checklist': checklist})
+			item_choice = request.POST[str(item.id)]
+			item.itemStatus = item_choice
+			item.save()
+
+	# Always return an HttpResponseRedirect after successfully dealing
+	# with POST data. This prevents data from being posted twice if a
+	# user hits the Back button.
+	return HttpResponseRedirect(reverse('checklist.views.checklist_result', args=(checklist.id,)))
 		
 		
 # Function to display checklist result, required user to logged in

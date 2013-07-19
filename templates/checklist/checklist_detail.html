@@ -8,37 +8,43 @@
 <a href="/checklist/home/">Home page</a>
 
 {% if checklist %}
-	<h1>{{ checklist.title }}</h1>
-	<li>
-	<p>Status: {{ checklist.status }} where {{ checklist.STATUS_CHOICES }}</p>
-	<p>Assignee: {{ checklist.assignee.username }}</p>
-	<p>File number: {{ checklist.fileNum }}</p>
-	<p>Description: {{ checklist.description }}</p>
-	<p>Created Date: {{ checklist.create_date }}</p>
-	<p>Land District: {{ checklist.landDistrict }}</p>
-	<p>Address: {{ checklist.address }}</p>
-	</li>
+	<h1>Checklist Detail Table</h1>
+	<table border="1">
+		<tr><th>Field</th><th>Detail</th></tr>
+		<tr><td>Title</td><td>{{ checklist.title }}</td></tr>		
+		<tr><td>Status</td><td>{{ checklist.status }}</td></tr>
+		<tr><td>Assignee</td><td>{{ checklist.assignee.username }}</td></tr>
+		<tr><td>File number</td><td>{{ checklist.fileNum }}</td></tr>
+		<tr><td>Description</td><td>{{ checklist.description }}</td></tr>
+		<tr><td>Created Date</td><td>{{ checklist.create_date }}</td></tr>				
+		<tr><td>Land District</td><td>{{ checklist.landDistrict }}</td></tr>
+		<tr><td>Address</td><td>{{ checklist.address }}</td></tr>
+	</table>
 
 
-	<h2>Checklist Items</h2>
+	<h1>Item Selection Table</h1>
 	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-	{% for item in checklist.item_set.all %}
-
-		<form action="/checklist/{{checklist.id}}/save/" method="post">
-		{% csrf_token %}
-			<li>{{ item.item }}
-			<input type="radio" name="choice" value="U" {% if item.itemStatus == "U" %}checked="true"{% endif %}/>Unanswered
-			<input type="radio" name="choice" value="Y" {% if item.itemStatus == "Y" %}checked="true"{% endif %}/>Yes
-			<input type="radio" name="choice" value="N" {% if item.itemStatus == "N" %}checked="true"{% endif %}/>NA
-			<input type="hidden" name="item" value="{{ item.id }}"/>
-			<input type="submit" value="Save" />
-			</li>
-		</form>
-	{% empty %}
-    	<li>No item in this list.</li>
-	{% endfor %}
-	
+	<form action="/checklist/{{checklist.id}}/save/" method="post">
+	{% csrf_token %}
+	<table border="1">
+		<tr><th>Item name</th><th>Status</th></tr>
+		{% for item in checklist.item_set.all %}
+		<tr>
+			<td>{{ item.item }}</td>
+			<td><input type="radio" name="{{ item.id }}" value="U" {% if item.itemStatus == "U" %}checked="true"{% endif %}/>Unanswered
+				<input type="radio" name="{{ item.id }}" value="Y" {% if item.itemStatus == "Y" %}checked="true"{% endif %}/>Yes
+				<input type="radio" name="{{ item.id }}" value="N" {% if item.itemStatus == "N" %}checked="true"{% endif %}/>NA
+			</td>
+		</tr>
+		{% empty %}
+			<li>No item in this list.</li>
+		{% endfor %}
+	</table>
+		
+	<input type="submit" value="Save" />
+	</form>
+			
 {% else %}
     <p>Can't find checklist.</p>
 {% endif %}
