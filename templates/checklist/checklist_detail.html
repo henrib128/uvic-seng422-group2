@@ -1,5 +1,9 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
+<head>
+<script src="http://openlayers.org/api/OpenLayers.js"></script>
+<script src="http://openweathermap.org/js/OWM.OpenLayers.1.3.5.js" ></script>
+</head>
 <body>
 {% load url from future %}
 
@@ -13,7 +17,7 @@
 	
 	<h1><span style="color:green;font-weight:bold">Checklist Detail Table</span></h1>
 	<table border="1">
-		<tr><th>Field</th><th>Detail</th></tr>
+		<tr><th>Field</th><th>Detail</th><td rowspan="11"><div id="map-weather" style="height:600px;width:800px;"></div></td></tr>
 		<tr><td>File number</td><td>{{ checklist.fileNum }}</td></tr>
 		<tr><td>Title</td><td>{{ checklist.title }}</td></tr>		
 		<tr><td>Status</td>
@@ -31,7 +35,23 @@
 		<tr><td>Address</td><td>{{ checklist.address }}</td></tr>
 		<tr><td>Comment</td><td>{{ checklist.comment }}</td></td></tr>
 	</table>
-
+	
+	<script type="text/javascript">
+		var mapnik = new OpenLayers.Layer.OSM();
+		var city = new OpenLayers.Layer.Vector.OWMWeather("Weather");
+		var mapweather = new OpenLayers.Map("map-weather");
+		mapweather.addLayers([mapnik, city]);
+		
+		var coord = '{{ checklist.address }}';
+		var a = coord.split(',');
+		if(a.length != 2) {
+			a[0] = 0;
+			a[1] = 0;
+		}
+		var lonlat = new OpenLayers.LonLat(parseFloat(a[1])*20000000/180, parseFloat(a[0])*11500000/90);
+		mapweather.setCenter(lonlat, 6);
+	</script>
+	
 	<h1><span style="color:green;font-weight:bold">Item Selection Table</span></h1>
 	<form action="/checklist/{{ checklist.id }}/validate/" method="post">
 	{% csrf_token %}
