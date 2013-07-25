@@ -24,7 +24,7 @@
 		{% if checklist.status == "R" %}<td><span style="color:red">Rejected</span></td>{% endif %}
 		</tr>
 		<tr><td>Assigner</td><td>{{ checklist.assigner.username }}</td></tr>
-		<tr><td>Assignee</td><td>{{ checklist.assignee.username }}</td></tr>		
+		<tr><td>Assignee</td><td>{{ checklist.assignee_names }}</td></tr>		
 		<tr><td>Description</td><td>{{ checklist.description }}</td></tr>
 		<tr><td>Date Created</td><td>{{ checklist.create_date }}</td></tr>				
 		<tr><td>Land District</td><td>{{ checklist.landDistrict }}</td></tr>

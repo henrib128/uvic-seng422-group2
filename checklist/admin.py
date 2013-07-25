@@ -13,7 +13,7 @@ class ItemInline(admin.TabularInline):
 class ChecklistAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['status']}),
-        (None,               {'fields': ['assignee']}),
+        (None,               {'fields': ['assignees']}),
         (None,               {'fields': ['fileNum']}),
         (None,               {'fields': ['title']}),
         (None,               {'fields': ['description']}),                
@@ -23,9 +23,9 @@ class ChecklistAdmin(admin.ModelAdmin):
 		(None,               {'fields': ['comment']}),
     ]
     inlines = [ItemInline]
-    list_display = ('title', 'assigner', 'assignee', 'landDistrict', 'create_date', 'status')
-    list_filter = ['status', 'assigner', 'assignee', 'landDistrict', 'create_date']
-    search_fields = ['title', 'assigner', 'assignnee']
+    list_display = ('title', 'assigner', 'assignee_names', 'landDistrict', 'create_date', 'status')
+    list_filter = ['status', 'assigner', 'assignees', 'landDistrict', 'create_date']
+    search_fields = ['title', 'assigner', 'assignnees']
     date_hierarchy = 'create_date'
     
     # Override ModelAdmin save_model function to save request user as creator of new checklist

@@ -18,7 +18,8 @@ class Checklist(models.Model):
 	landDistrict = models.CharField(max_length=100)
 	address = models.CharField(max_length=100)
 	assigner = models.ForeignKey(AutUser, related_name='checklist_assigner', blank=True, null=True)
-	assignee = models.ForeignKey(AutUser, related_name='checklist_assignee', blank=True, null=True)
+	#assignee = models.ForeignKey(AutUser, related_name='checklist_assignee', blank=True, null=True)
+	assignees = models.ManyToManyField(AutUser, related_name='checklist_assignees', blank=True, null=True)
 	comment = models.CharField(max_length=100, blank=True)
 	STATUS_CHOICES = (
 		('N', 'New'),
@@ -32,6 +33,11 @@ class Checklist(models.Model):
 	def __unicode__(self):
 		return self.title
 
+	def assignee_names(self):
+		return ', '.join([assignee.username for assignee in self.assignees.all()])
+	
+	assignee_names.short_description = "Assignees"
+	
 # Database model for Item in the checklist
 # Item has many-to-one relationship with Checklist
 # Each item has status of 'Unanswered', 'Yes', or 'N/A'
