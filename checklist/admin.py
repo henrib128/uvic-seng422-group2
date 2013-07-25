@@ -1,8 +1,9 @@
 from django.contrib import admin
 
+from django.forms.widgets import CheckboxSelectMultiple
+
 # import app models
-from checklist.models import Checklist
-from checklist.models import Item
+from checklist.models import Checklist, Item, ChecklistForm
 
 # Inline classes for formatting display of One-to-Many relationship
 class ItemInline(admin.TabularInline):
@@ -11,22 +12,30 @@ class ItemInline(admin.TabularInline):
     
 # ModelAdmin classes for specifying how a Model is being displayed and structured on Admin page
 class ChecklistAdmin(admin.ModelAdmin):
+    # User filter horizontal field to display pretty 'SelectMultiple' widgets, namely for ManyToManyField attribute
+    filter_horizontal = ('assignees',)
+	
+	# Using 'form' field is another way to override default widgets, defined in ChecklistForm in Model
+    #form = ChecklistForm
+	
+	# Dictate which attribute to be shown in which format and order
     fieldsets = [
-        (None,               {'fields': ['status']}),
-        (None,               {'fields': ['assignee']}),
-        (None,               {'fields': ['fileNum']}),
-        (None,               {'fields': ['title']}),
-        (None,               {'fields': ['description']}),                
-        (None,               {'fields': ['create_date']}),
-        (None,               {'fields': ['landDistrict']}),
-        (None,               {'fields': ['address']}),
-		(None,               {'fields': ['comment']}),
+    	(None, {'fields': ('status','assignees','fileNum','title','description','create_date','landDistrict','address','comment')}),
     ]
+
     inlines = [ItemInline]
-    list_display = ('title', 'assignee', 'landDistrict', 'create_date', 'status')
-    list_filter = ['status', 'assignee', 'landDistrict', 'create_date']
-    search_fields = ['title', 'assignnee']
+    list_display = ('title', 'assigner', 'assignee_names', 'landDistrict', 'create_date', 'status')
+    list_filter = ['status', 'assigner', 'assignees', 'landDistrict', 'create_date']
+    search_fields = ['title', 'assigner', 'assignnees']
     date_hierarchy = 'create_date'
+    
+    # Override ModelAdmin save_model function to save request user as creator of new checklist
+    def save_model(self, request, obj, form, change):
+		"""When creating a new object, set the creator field.
+		"""
+		if not change:
+		    obj.assigner = request.user
+		obj.save()
 
 # Registering models to Admin page with ModleAdmin format (in this case Checklist and ChecklistAdmin)
 # All models that wish to be displayed in Admin page need to be registered

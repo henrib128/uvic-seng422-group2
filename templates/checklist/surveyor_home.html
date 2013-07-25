@@ -26,7 +26,7 @@ Also views should use render() instead of render_to_response() for auto adding r
 			{% for checklist in checklists %}
 				<tr>
 				<td><a href="/checklist/{{ checklist.id }}/">{{ checklist.title }}</a></td>
-				<td>{{ checklist.assignee.username }}</td>
+				<td>{{ checklist.assignee_names }}</td>
 				<td>{{ checklist.landDistrict }}</td>
 				<td>{{ checklist.create_date }}</td>
 				{% if checklist.status == "N" %}<td><span style="color:yellow">New</span></td>{% endif %}

@@ -46,7 +46,7 @@ def login_view(request):
 		
 			# Get a list of checklists assigned to this user
 			aut_user = request.user
-			checklists = aut_user.checklist_set.all().order_by('-status','-create_date')
+			checklists = aut_user.checklist_assignees.all().order_by('-status','-create_date')
 		
 			# Use render() for auto adding request context and csrf, html should refer user as 'user' (not 'request.user')
 			return render(request,'checklist/surveyor_home.html', {'checklists': checklists})
@@ -66,7 +66,7 @@ def login_view(request):
 def home(request):
 	# Get a list of checklists assigned to this user
 	aut_user = request.user
-	checklists = aut_user.checklist_set.all().order_by('-create_date')
+	checklists = aut_user.checklist_assignees.all().order_by('-create_date')
 
 	# Use render() for auto adding request context and csrf, html should refer user as 'user' (not 'request.user')
 	return render(request,'checklist/surveyor_home.html', {'checklists': checklists})
@@ -76,19 +76,8 @@ def home(request):
 def checklist_detail(request, checklist_id):
 	#p = get_object_or_404(Poll, pk=poll_id)
 	checklist = Checklist.objects.get(id=checklist_id)
-	log_entry = LogEntry.objects.filter(
-		object_id=checklist.id,
-		action_flag=ADDITION,
-		content_type__id__exact=ContentType.objects.get_for_model(Checklist).id
-	)
-	#LogEntry.objects.log_action(
-	#	        user_id=request.user.id,
-	#	        content_type_id=ContentType.objects.get_for_model(model_object).pk,
-	#	        object_id=object.id,
-	#	        object_repr=unicode(object.title),
-	#	        action_flag=ADDITION if create else CHANGE)
 
-	return render(request,'checklist/checklist_detail.html', {'checklist': checklist, 'log_entry': log_entry})
+	return render(request,'checklist/checklist_detail.html', {'checklist': checklist})
 
 		
 # Function to save and validate items of a checklist, required user to logged in
