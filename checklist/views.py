@@ -5,8 +5,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 from django.core.urlresolvers import reverse
 
+# Packages for login/logout authentication
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
+# Package for LogEntry access to retrieve change logs data such as creator of a model object
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE
 
 # Database related models
 from checklist.models import Checklist
@@ -71,7 +76,19 @@ def home(request):
 def checklist_detail(request, checklist_id):
 	#p = get_object_or_404(Poll, pk=poll_id)
 	checklist = Checklist.objects.get(id=checklist_id)
-	return render(request,'checklist/checklist_detail.html', {'checklist': checklist})
+	log_entry = LogEntry.objects.filter(
+		object_id=checklist.id,
+		action_flag=ADDITION,
+		content_type__id__exact=ContentType.objects.get_for_model(Checklist).id
+	)
+	#LogEntry.objects.log_action(
+	#	        user_id=request.user.id,
+	#	        content_type_id=ContentType.objects.get_for_model(model_object).pk,
+	#	        object_id=object.id,
+	#	        object_repr=unicode(object.title),
+	#	        action_flag=ADDITION if create else CHANGE)
+
+	return render(request,'checklist/checklist_detail.html', {'checklist': checklist, 'log_entry': log_entry})
 
 		
 # Function to save and validate items of a checklist, required user to logged in

@@ -5,14 +5,16 @@
 
 {% block content %}
 
-<a href="/checklist/home/">Home page</a>
+<a href="/checklist/home/">Home page</a><br>
 
 {% if checklist %}
+
 	{% if error_message %}<p><span style="color:red;font-weight:bold">{{ error_message }}</span></p>{% endif %}
 	
 	<h1><span style="color:green;font-weight:bold">Checklist Detail Table</span></h1>
 	<table border="1">
 		<tr><th>Field</th><th>Detail</th></tr>
+		<tr><td>File number</td><td>{{ checklist.fileNum }}</td></tr>
 		<tr><td>Title</td><td>{{ checklist.title }}</td></tr>		
 		<tr><td>Status</td>
 		{% if checklist.status == "N" %}<td><span style="color:yellow">New</span></td>{% endif %}
@@ -21,8 +23,8 @@
 		{% if checklist.status == "A" %}<td><span style="color:green">Approved</span></td>{% endif %}
 		{% if checklist.status == "R" %}<td><span style="color:red">Rejected</span></td>{% endif %}
 		</tr>
-		<tr><td>Assignee</td><td>{{ checklist.assignee.username }}</td></tr>
-		<tr><td>File number</td><td>{{ checklist.fileNum }}</td></tr>
+		<tr><td>Assigner</td><td>{{ log_entry.0.user.username }}</td></tr>
+		<tr><td>Assignee</td><td>{{ checklist.assignee.username }}</td></tr>		
 		<tr><td>Description</td><td>{{ checklist.description }}</td></tr>
 		<tr><td>Date Created</td><td>{{ checklist.create_date }}</td></tr>				
 		<tr><td>Land District</td><td>{{ checklist.landDistrict }}</td></tr>

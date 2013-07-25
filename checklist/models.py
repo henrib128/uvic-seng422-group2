@@ -18,7 +18,7 @@ class Checklist(models.Model):
 	landDistrict = models.CharField(max_length=100)
 	address = models.CharField(max_length=100)
 	assignee = models.ForeignKey(AutUser, blank=True, null=True)
-	overallComment = models.CharField(max_length=100)
+	overallComment = models.CharField(max_length=100, null=True)
 	STATUS_CHOICES = (
 		('N', 'New'),
 		('I', 'Inprogress'),
@@ -53,7 +53,7 @@ class Item(models.Model):
 		('N', 'N/A'),
 	)	
 	itemStatus = models.CharField(max_length=2,choices=STATUS_CHOICES,default='U')
-	itemComment = models.CharField(max_length=100)
+	itemComment = models.CharField(max_length=100, null=True)
 
 	def __unicode__(self):
 		return self.item	
