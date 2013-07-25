@@ -107,7 +107,9 @@ def checklist_validate(request, checklist_id):
 		# Save selected choice to database
 		if str(item.id) in request.POST:
 			item_choice = request.POST[str(item.id)]
+			item_comment = request.POST[str(item.id)+".itemComment"]
 			item.itemStatus = item_choice
+			item.itemComment = item_comment
 			item.save()
 		
 		# Set is_validated flag to False if any item is 'Unanswered'

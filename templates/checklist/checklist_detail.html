@@ -36,8 +36,8 @@
 	<form action="/checklist/{{ checklist.id }}/validate/" method="post">
 	{% csrf_token %}
 
-	<table width="100%" border="0">
-		<tr><th>Item name</th><th>Status</th></tr>
+	<table border="1">
+		<tr><th>Item name</th><th>Status</th><th>Comment</th></tr>
 		{% for item in checklist.item_set.all %}
 		<tr>
 			<td>{{ item.item }}</td>
@@ -49,13 +49,13 @@
 					<span style="color:green">Yes</span>
 				<input type="radio" name="{{ item.id }}" value="N" {% if item.itemStatus == "N" %}checked="true"{% endif %}/>
 					<span style="color:blue">N/A</span>
-<input type="text" name="Comment" value= "{{ item.itemComment }}"/>
 				</td>
+				<td><input type="text" name="{{ item.id }}.itemComment" value= "{{ item.itemComment }}"/></td>
 			{% else %}
 				{% if item.itemStatus == "U" %}<td><span style="color:red">Unanswered</span></td>{% endif %}
 				{% if item.itemStatus == "Y" %}<td><span style="color:green">Yes</span></td>{% endif %}
 				{% if item.itemStatus == "N" %}<td><span style="color:blue">Not Applicable</span></td>{% endif %}
-<input type="text" name="Comment" value= "{{ item.itemComment }}"/>
+				<td>{{ item.itemComment }}</td>
 			{% endif %}	
 		</tr>
 		{% empty %}
