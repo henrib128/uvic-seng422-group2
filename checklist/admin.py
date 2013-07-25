@@ -23,10 +23,18 @@ class ChecklistAdmin(admin.ModelAdmin):
 		(None,               {'fields': ['comment']}),
     ]
     inlines = [ItemInline]
-    list_display = ('title', 'assignee', 'landDistrict', 'create_date', 'status')
-    list_filter = ['status', 'assignee', 'landDistrict', 'create_date']
-    search_fields = ['title', 'assignnee']
+    list_display = ('title', 'assigner', 'assignee', 'landDistrict', 'create_date', 'status')
+    list_filter = ['status', 'assigner', 'assignee', 'landDistrict', 'create_date']
+    search_fields = ['title', 'assigner', 'assignnee']
     date_hierarchy = 'create_date'
+    
+    # Override ModelAdmin save_model function to save request user as creator of new checklist
+    def save_model(self, request, obj, form, change):
+		"""When creating a new object, set the creator field.
+		"""
+		if not change:
+		    obj.assigner = request.user
+		obj.save()
 
 # Registering models to Admin page with ModleAdmin format (in this case Checklist and ChecklistAdmin)
 # All models that wish to be displayed in Admin page need to be registered

@@ -17,7 +17,8 @@ class Checklist(models.Model):
 	create_date = models.DateTimeField('date created')
 	landDistrict = models.CharField(max_length=100)
 	address = models.CharField(max_length=100)
-	assignee = models.ForeignKey(AutUser, blank=True, null=True)
+	assigner = models.ForeignKey(AutUser, related_name='checklist_assigner', blank=True, null=True)
+	assignee = models.ForeignKey(AutUser, related_name='checklist_assignee', blank=True, null=True)
 	comment = models.CharField(max_length=100, blank=True)
 	STATUS_CHOICES = (
 		('N', 'New'),
