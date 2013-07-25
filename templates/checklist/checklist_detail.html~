@@ -24,10 +24,11 @@
 		<tr><td>Assignee</td><td>{{ checklist.assignee.username }}</td></tr>
 		<tr><td>File number</td><td>{{ checklist.fileNum }}</td></tr>
 		<tr><td>Description</td><td>{{ checklist.description }}</td></tr>
+		<tr><td>Overall Comment</td><td>{{ checklist.overallComment }}</td></tr>
 		<tr><td>Date Created</td><td>{{ checklist.create_date }}</td></tr>				
 		<tr><td>Land District</td><td>{{ checklist.landDistrict }}</td></tr>
 		<tr><td>Address</td><td>{{ checklist.address }}</td></tr>
-		<tr><td>Overall Comment</td><td>{{ checklist.overallComment }}</td></tr>
+		
 	</table>
 
 	<h1><span style="color:green;font-weight:bold">Item Selection Table</span></h1>
