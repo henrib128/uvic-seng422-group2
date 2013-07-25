@@ -49,11 +49,13 @@
 					<span style="color:green">Yes</span>
 				<input type="radio" name="{{ item.id }}" value="N" {% if item.itemStatus == "N" %}checked="true"{% endif %}/>
 					<span style="color:blue">N/A</span>
+<input type="text" name="Comment" value= "{{ item.itemComment }}"/>
 				</td>
 			{% else %}
 				{% if item.itemStatus == "U" %}<td><span style="color:red">Unanswered</span></td>{% endif %}
 				{% if item.itemStatus == "Y" %}<td><span style="color:green">Yes</span></td>{% endif %}
 				{% if item.itemStatus == "N" %}<td><span style="color:blue">Not Applicable</span></td>{% endif %}
+<input type="text" name="Comment" value= "{{ item.itemComment }}"/>
 			{% endif %}	
 		</tr>
 		{% empty %}

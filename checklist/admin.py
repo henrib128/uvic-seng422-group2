@@ -20,7 +20,7 @@ class ChecklistAdmin(admin.ModelAdmin):
         (None,               {'fields': ['create_date']}),
         (None,               {'fields': ['landDistrict']}),
         (None,               {'fields': ['address']}),
-		(None,               {'fields': ['comment']}),
+	(None,               {'fields': ['comment']}),
     ]
     inlines = [ItemInline]
     list_display = ('title', 'assigner', 'assignee_names', 'landDistrict', 'create_date', 'status')

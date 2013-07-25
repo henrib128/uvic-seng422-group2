@@ -13,7 +13,7 @@
 	
 	<ul>
 	{% for item in checklist.item_set.all %}
-		<li>{{ item.item }} -- {{ item.itemStatus }}</li>
+		<li>{{ item.item }} -- {{ item.itemStatus }} -- {{ item.itemComment }}</li>
 	{% empty %}
     	<li>No item in this list.</li>
     {% endfor %}
@@ -39,7 +39,6 @@
 	<input type="submit" value="Submit for Review" />
 	{% if submit_message %}<p><strong>{{ submit_message }}</strong></p>{% endif %}
 </form>
-<img border="0" src="http://maps.googleapis.com/maps/api/staticmap?center=-15.800513,-47.91378&zoom=11&size=200x200&sensor=false" alt="Map" width="200" height="200">
 {% endblock %}
 </body>
 </html>
