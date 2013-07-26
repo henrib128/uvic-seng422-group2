@@ -106,11 +106,10 @@
 		
 		{% if checklist.status != "S" and checklist.status != "A" %}
 		<tr>
-			<td></td>
-			<td></td>
-			<td><input type="submit" value="Save and Validate" style="text-align:center;"/></td>
+			<td colspan="2"></td>
+			<td align="left"><input type="submit" value="Save and Validate" style="text-align:center;"/></td>
 	</form>
-			<td>
+			<td align="left">
 				<form action="/checklist/{{checklist.id}}/submit/" method="post">
 				{% csrf_token %}
 					<input type="submit" value="Validate and Submit for Review" />
