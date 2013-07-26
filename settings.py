@@ -108,8 +108,9 @@ ROOT_URLCONF = 'seng422gp2.urls'
 
 TEMPLATE_DIRS = (
 
-    "/home/tri/seng422/seng422gp2/templates",
     "/web/group2/seng422gp2/templates",
+    "/home/pi/seng422/seng422gp2/templates",
+    "/home/tri/seng422/seng422gp2/templates",
     "/home/henri/422/seng422gp2/templates",
     "/home/scott/Desktop/S422Project/seng422gp2/templates"
 
