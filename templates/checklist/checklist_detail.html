@@ -42,6 +42,8 @@
 	</table>
 	
     <script>
+    	var map;
+    	
 		var coord = '{{ checklist.address }}';
 		var a = coord.split(',');
 		if(a.length != 2) {
@@ -52,17 +54,21 @@
 			a[0] = escape(a[0].trim());
 			a[1] = escape(a[1].trim());
 		}
+	
+		var w = document.getElementById('weather');
+		w.innerHTML = "<iframe src='http://api.openweathermap.org/data/2.5/weather?lat=" + a[0] + "&lon=" + a[1] + "&mode=html' frameBorder='0' width='100%' height='160px'></iframe>";
 		
-    	var w = document.getElementById('weather');
-    	w.innerHTML = "<iframe src='http://api.openweathermap.org/data/2.5/weather?lat=" + a[0] + "&lon=" + a[1] + "&mode=html' frameBorder='0' width='100%' height='100%'></iframe>";
+    	function initialize() {
+			var mapOptions = {
+				zoom: 16,
+				center: new google.maps.LatLng(a[0], a[1]),
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			
+			map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+		}
 		
-		var mapOptions = {
-			zoom: 16,
-			center: new google.maps.LatLng(a[0], a[1]),
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		
-		var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+		google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 	
 	<h1><span style="color:green;font-weight:bold">Item Selection Table</span></h1>
