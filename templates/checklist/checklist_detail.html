@@ -100,6 +100,10 @@
 				<td>{{ item.itemComment }}</td>
 			{% endif %}	
 		</tr>
+		{% empty %}
+			<li>No item in this list.</li>
+		{% endfor %}
+		
 		{% if checklist.status != "S" and checklist.status != "A" %}
 		<tr>
 			<td></td>
@@ -114,9 +118,6 @@
 			</td>
 		</tr>
 		{% endif %}
-		{% empty %}
-			<li>No item in this list.</li>
-		{% endfor %}
 	</table>
 
 	{% if validate_message %}
